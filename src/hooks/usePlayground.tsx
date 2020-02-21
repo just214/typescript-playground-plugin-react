@@ -4,7 +4,7 @@ const { useState, useEffect } = React;
 type Model = import("monaco-editor").editor.ITextModel;
 type FlashInfo = (message: string) => void;
 type ShowModal = {
-  (code: string, subTitle?: string, links?: string[]): void;
+  (code: string, subtitle?: string, links?: string[]): void;
 };
 
 export const usePlayground = ({ debounce }: { debounce: boolean }) => {

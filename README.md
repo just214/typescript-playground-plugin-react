@@ -74,11 +74,11 @@ You can make customizations to your plugin by modifying the `customPlugin` objec
 
 Two props are provided to the `App` component:
 
-- `container`
+- #### `container`
 
   This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.
 
-- `sandbox`
+- #### `sandbox`
 
   A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground.
 
@@ -88,7 +88,7 @@ Two props are provided to the `App` component:
 
 This hook accepts a optional config object and returns an object with three properties:
 
-- ### `model`
+- #### `model`
 
   The model is an object which monaco uses to keep track of text in the editor. A new copy is returned on any change to the code in the editor. You can optionally debounce the event by passing in `{debounce: true}`.
 
@@ -104,13 +104,13 @@ This hook accepts a optional config object and returns an object with three prop
   }, [model]);
   ```
 
-- ### `showModal`
+- #### `showModal`
 
   ```typescript
-  (code: string, subTitle?: string, links?: string[]) => void
+  (code: string, subtitle?: string, links?: string[]) => void
   ```
 
-  From `window.playground.ui` - This function accepts 3 arguments (code, subTitle, and links) and opens a model with the values you provide.
+  From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide.
 
   ```tsx
   const { showModal } = usePlayground({ debounce: true });
@@ -121,7 +121,7 @@ This hook accepts a optional config object and returns an object with three prop
   }, [model]);
   ```
 
-* ### `flashInfo`
+* #### `flashInfo`
 
   ```typescript
   (message: string) => void
