@@ -1,33 +1,44 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import { Provider } from "./playground";
 
 const customPlugin: import("./types/playground").PlaygroundPlugin = {
   id: "react",
   displayName: "React",
   didMount(sandbox, container) {
-    ReactDOM.render(<App sandbox={sandbox} container={container} />, container);
+    ReactDOM.render(
+      <Provider sandbox={sandbox} container={container}>
+        <App />
+      </Provider>,
+      container
+    );
   },
   modelChanged(_, model) {
-    var event = new CustomEvent("modelChanged", {
-      detail: {
-        // sandbox,
-        model
-      }
-    });
-    window.dispatchEvent(event);
+    const modelChangedEvent = createCustomEvent("modelChanged", model);
+    window.dispatchEvent(modelChangedEvent);
   },
   modelChangedDebounce(_, model) {
-    var event = new CustomEvent("modelChangedDebounce", {
-      detail: {
-        // sandbox,
-        model
-      }
-    });
-    window.dispatchEvent(event);
+    const modelChangedDebounceEvent = createCustomEvent(
+      "modelChangedDebounce",
+      model
+    );
+    window.dispatchEvent(modelChangedDebounceEvent);
   }
+  // Don't need these
   // willUnmount(sandbox, container) {}
   // didUnmount(sandbox, container) {}
 };
+
+function createCustomEvent(
+  name: string,
+  model: import("monaco-editor").editor.ITextModel
+) {
+  return new CustomEvent(name, {
+    detail: {
+      model
+    }
+  });
+}
 
 export default customPlugin;

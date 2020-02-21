@@ -8,10 +8,9 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 
 1. [Motivation](#motivation)
 2. [Getting Started](#getting-started)
-3. [Props](#props)
-4. [usePlayground Hook](#useplayground-hook)
-5. [Styling Your Plugin](#styling-your-plugin)
-6. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
+3. [usePlayground Hook](#useplayground-hook)
+4. [Styling Your Plugin](#styling-your-plugin)
+5. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
 
 ## Motivation
 
@@ -26,24 +25,24 @@ The TypeScript Playground V2 comes packed with lots of new features, including t
 This package allows you to use React as a replacement (or addition to) the DOM APIs to create a rich, interactive UI for your plugin.
 
 > **How does it work?**  
-> The TypeScript Playground Plugin API provides lifecycle methods that are used to interact with the playground. This library works by mounting a React app inside of the `didMount` method that the API exposes. The `modelChanged` and `modelChangedDebounce` API methods are called any time the code in the editor changes. Custom events are used to broadcast the changes to a custom React hook.
+> The TypeScript Playground Plugin API provides lifecycle methods that are used to interact with the playground. This library works by mounting a React app inside of the `didMount` method that the API exposes. The `modelChanged` and `modelChangedDebounce` API methods are called any time the code in the editor changes. Custom events are used to broadcast the changes to a context that wraps the app component.
 
 ## Getting Started
 
-#### Step 1. Clone this repo and navigate to the directory
+#### Step 1. Get the Code
+
+> Option 1: Clone the repo
 
 ```sh
 git clone git@github.com:gojutin/typescript-playground-plugin-react.git
 ```
 
-```sh
-cd typescript-playground-plugin-react
-```
+> Option 2: Click the "Use this template" button in GitHub [(Link)](https://github.com/gojutin/typescript-playground-plugin-react)
 
-#### Step 2. Download dependencies
+#### Step 2. Install dependencies
 
 ```sh
-yarn
+cd typescript-playground-plugin-react && yarn
 ```
 
 #### Step 3. Start the development server
@@ -52,7 +51,7 @@ yarn
 yarn start
 ```
 
-This will start a development server in watch mode. As you edit any files in the `src` directory, the app will recompile and update `dist/index.js`, which is the file that is served to the TypeScript Playground.
+This will start a development server in watch mode, serve the `dist` directory at `localhost:5000`, and automatically open the TypeScript Playground. As you edit any files in the `src` directory, the app will recompile and update `dist/index.js`, which is the file that is served to the TypeScript Playground.
 
 > _Note: This does not reload the browser when your files change. In order to see your changes, the browser will need to be manually reloaded each time you make changes to the plugin._
 
@@ -70,73 +69,41 @@ Now, **refresh the browser**. When the playground reloads, a new tab with your p
 
 You can make customizations to your plugin by modifying the `customPlugin` object in `src/index.tsx`. For instance, you can change the `displayName` property to change the tab label text for your plugin. See the `PlaygroundPlugin` interface in `src/types/playground.d.ts` for all of the available options.
 
-## Props
-
-Two props are provided to the `App` component:
-
-- #### `container`
-
-  This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.
-
-- #### `sandbox`
-
-  A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground.
-
-  This object provides several properties and methods to interact with the playground. See all of the available types in `src/types/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/).
-
 ## `usePlayground` Hook
 
-This hook accepts a optional config object and returns an object with three properties:
+This hooks provides all of the method and properties provided by the Plugin API. It accepts a optional config object and returns an object with these properties:
 
-- #### `model`
+| Props     | Type                                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| container | `HTMLDivElement`                                              | This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.                                                                                                                                                                                                                             |
+| sandbox   | `object`                                                      | A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/types/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
+| modal     | `object`                                                      | The model is an object which monaco uses to keep track of text in the editor. A new copy is returned on any change to the code in the editor. You can optionally debounce the event by passing in `{debounce: true}`. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. This library includes the types so you can also use intellisense.               |
+| code      | `string`                                                      | The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Same as `sandbox.getText()`                                                                                                                                                                                                                                                             |
+| showModal | `(code: string, subtitle?: string, links?: string[]) => void` | From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide.                                                                                                                                                                                                                                                                 |
+| flashInfo | `(message: string) => void`                                   | From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen.                                                                                                                                                                                                                                                                      |
 
-  The model is an object which monaco uses to keep track of text in the editor. A new copy is returned on any change to the code in the editor. You can optionally debounce the event by passing in `{debounce: true}`.
+Example
 
-  You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. This library also includes the types so you can also use intellisense.
+```tsx
+const {
+  code,
+  sandbox,
+  model,
+  container,
+  flashInfo,
+  showModal
+} = usePlayground({ debounce: true });
 
-  ```tsx
-  const { model } = usePlayground({ debounce: true });
+// Update the code in the Monaco editor
+useEffect(() => {
+  sandbox.setText('const greet = (): string => "Hi👋";');
+}, []);
 
-  // Use a useEffect to listen for changes.
-  useEffect(() => {
-    const newCode = sandbox.getText();
-    console.log(`The new code is: ${newCode}`);
-  }, [model]);
-  ```
-
-- #### `showModal`
-
-  ```typescript
-  (code: string, subtitle?: string, links?: string[]) => void
-  ```
-
-  From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide.
-
-  ```tsx
-  const { showModal } = usePlayground({ debounce: true });
-
-  useEffect(() => {
-    const newCode = sandbox.getText();
-    showModal(newCode, "Here is your code");
-  }, [model]);
-  ```
-
-* #### `flashInfo`
-
-  ```typescript
-  (message: string) => void
-  ```
-
-  From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen.
-
-  ```tsx
-  const { flashInfo } = usePlayground({ debounce: true });
-
-  useEffect(() => {
-    const newCode = sandbox.getText();
-    flashInfo("Your code changed!");
-  }, [model]);
-  ```
+// Listen for changes to the code in the Monaco editor
+useEffect(() => {
+  console.log("The editor code changed to: ", code);
+}, [code]);
+```
 
 ## Styling your plugin
 

@@ -1,27 +1,28 @@
 import React from "react";
 import { css } from "goober";
-import { usePlayground } from "./hooks/usePlayground";
-import { Sandbox } from "./types/playground";
+import { usePlayground } from "./playground";
 import logo from "./assets/logo.svg";
 import "./App.css";
 
 const { useEffect } = React;
 
-type Props = {
-  sandbox: Sandbox;
-  container: HTMLDivElement;
-};
-
-const App: React.FC<Props> = ({ sandbox, container }) => {
-  const { model, flashInfo, showModal } = usePlayground({ debounce: true });
+const App: React.FC = () => {
+  const {
+    code,
+    sandbox,
+    model,
+    container,
+    flashInfo,
+    showModal
+  } = usePlayground({ debounce: true });
 
   useEffect(() => {
     sandbox.setText('const greet = (): string => "Hi👋";');
   }, []);
 
   useEffect(() => {
-    console.log("The editor code changed to: ", sandbox.getText());
-  }, [model]);
+    console.log("The editor code changed to: ", code);
+  }, [code]);
 
   function handleClear() {
     sandbox.setText("");
@@ -29,7 +30,7 @@ const App: React.FC<Props> = ({ sandbox, container }) => {
   }
 
   function handleOpenModal() {
-    showModal(sandbox.getText(), "Here is your code.");
+    showModal(code, "Here is your code.");
   }
 
   return (
