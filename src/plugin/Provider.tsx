@@ -1,27 +1,30 @@
 import React from "react";
-import { Sandbox } from "../types/playground";
+import { Sandbox } from "./vendor/playground";
 const { useState, useEffect, createContext, useCallback } = React;
 
 type Model = import("monaco-editor").editor.ITextModel;
+type ModelMarker = import("monaco-editor").editor.IMarker;
 type FlashInfo = (message: string) => void;
 type ShowModal = {
   (code: string, subtitle?: string, links?: string[]): void;
 };
 
-export const PlaygroundContext = createContext({});
+export const PluginContext = createContext({});
 
-export type PlaygroundContextProps = {
+export type PluginContextProps = {
   code: string;
   container: HTMLDivElement;
   sandbox: Sandbox;
   model: Model;
   flashInfo: FlashInfo;
   showModal: ShowModal;
-  // Internal only
+  markers: ModelMarker[];
+  setCode(value: string): void;
+  formatCode(): void;
   setDebounce(debounce: boolean): void;
 };
 
-type ProviderProps = Pick<PlaygroundContextProps, "sandbox" | "container">;
+type ProviderProps = Pick<PluginContextProps, "sandbox" | "container">;
 
 export const Provider: React.FC<ProviderProps> = ({
   sandbox,
@@ -29,12 +32,20 @@ export const Provider: React.FC<ProviderProps> = ({
   children
 }) => {
   const [model, setModel] = useState<any>();
-  const [code, setCode] = useState(sandbox.getText());
+  const [code, _setCode] = useState(sandbox.getText());
+  const [markers, setMarkers] = useState<ModelMarker[]>([]);
   const [debounce, setDebounce] = useState(false);
 
   const listenerFn = useCallback((evt: any): void => {
     setModel({ ...evt.detail.model });
-    setCode(sandbox.getText());
+    _setCode(sandbox.getText());
+  }, []);
+
+  useEffect(() => {
+    sandbox.editor.onDidChangeModelDecorations(() => {
+      const allMarkers = sandbox.monaco.editor.getModelMarkers({});
+      setMarkers(allMarkers);
+    });
   }, []);
 
   useEffect(() => {
@@ -45,6 +56,14 @@ export const Provider: React.FC<ProviderProps> = ({
     () => window.removeEventListener(eventName, listenerFn, false);
   }, [debounce]);
 
+  const formatCode = useCallback(() => {
+    return sandbox.editor.getAction("editor.action.formatDocument").run();
+  }, []);
+
+  const setCode = useCallback((value: string) => {
+    sandbox.setText(value);
+  }, []);
+
   // @ts-ignore
   const { showModal, flashInfo } = window.playground.ui;
   const value = {
@@ -54,11 +73,12 @@ export const Provider: React.FC<ProviderProps> = ({
     sandbox,
     container,
     code,
-    setDebounce
+    setCode,
+    formatCode,
+    setDebounce,
+    markers
   };
   return (
-    <PlaygroundContext.Provider value={value}>
-      {children}
-    </PlaygroundContext.Provider>
+    <PluginContext.Provider value={value}>{children}</PluginContext.Provider>
   );
 };

@@ -9,18 +9,20 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 1. [Features](#features)
 1. [About](#about)
 2. [Getting Started](#getting-started)
-3. [usePlayground Hook](#useplayground-hook)
+3. [usePlugin Hook](#usePlugin-hook)
 4. [Styling Your Plugin](#styling-your-plugin)
 5. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
 
 ## Features
-* Write your TypeScript Playground plugin in React and TypeScript.
-* Interact with the Playground using a strongly-typed React hook.
-* Create styles with stylesheets or CSS-in-JS with Goober.
+✔️ Write your TypeScript Playground plugin in React and TypeScript.
+
+✔️ Interact with the Playground using a strongly-typed React hook.
+
+✔️ Create styles with stylesheets or CSS-in-JS with Goober.
 
 ## About
 
-The TypeScript Playground V2 comes packed with lots of new features, including the ability to create plugins. Per the TypeScript docs:
+The TypeScript Playground V3 beta comes packed with lots of new features, including the ability to create plugins. Per the TypeScript docs:
 
 > The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.
 >
@@ -74,36 +76,71 @@ Now, **refresh the browser**. When the playground reloads, a new tab with your p
 
 <img src="./screenshots/screenshot2.png" style="max-width: 80%;"/>
 
-You can make customizations to your plugin by modifying the `customPlugin` object in `src/index.tsx`. For instance, you can change the `displayName` property to change the tab label text for your plugin. See the `PlaygroundPlugin` interface in `src/types/playground.d.ts` for all of the available options.
+You can make customizations to your plugin by modifying the `customPlugin` object in `src/index.tsx`. For instance, you can change the `displayName` property to change the tab label text for your plugin. See the `PlaygroundPlugin` interface in `src/plugin/vendor/playground.d.ts` for all of the available options.
 
-## `usePlayground` Hook
+## `usePlugin` Hook
 
 This hooks provides all of the method and properties provided by the Plugin API. It accepts a optional config object and returns an object with these properties:
 
 | Name | Description |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **container** | `HTMLDivElement`  <br /><br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
-| **sandbox** | `object`  <br /><br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/types/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
+| **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Alias for `sandbox.getText()` |
+| **setCode** | `(code: string) => void`  <br /><br /> Set the code in the Monaco editor. Alias for `sandbox.setText()`  |
+| **formatCode** | `() => void`  <br /><br /> Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`  |
+| **markers** | `IMarker[]`  <br /><br /> Alias for `sandbox.monaco.editor.getModelMarkers({})` that is kept in sync via `sandbox.editor.onDidChangeModelDecorations`.    |
+| **setDebounce** | `(debounce: boolean) => void`  <br /><br /> Optionally debounce the `modelChange` event from the Plugin API. |
+| **sandbox** | `object`  <br /><br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/plugin/vendor/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
 | **modal** | `object`  <br /><br /> The model is an object which monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. |
-| **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Same as `sandbox.getText()` |
+| **container** | `HTMLDivElement`  <br /><br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
 | **showModal** | `(code: string, subtitle?: string, links?: string[]) => void`  <br /><br /> From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide. |
 | **flashInfo** | `(message: string) => void`  <br /><br /> From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen. |
+
+
+
+Here is the [type definition](https://github.com/Microsoft/monaco-editor/blob/master/monaco.d.ts#L875) for `IMarker`:
+
+```typescript
+interface IMarker {
+  owner: string;
+  resource: Uri;
+  severity: MarkerSeverity;
+  code?: string | {
+      value: string;
+      link: Uri;
+  };
+  message: string;
+  source?: string;
+  startLineNumber: number;
+  startColumn: number;
+  endLineNumber: number;
+  endColumn: number;
+  relatedInformation?: IRelatedInformation[];
+  tags?: MarkerTag[];
+}
+```
+
+#### Example `usePlugin` Usage
 
 ```tsx
 const {
   code,
+  setCode,
+  formatCode,
+  markers,
+  setDebounce,
   sandbox,
   model,
   container,
   flashInfo,
   showModal
-} = usePlayground({ debounce: true });
+} = usePlugin();
 
 // Here are some examples of things you can do:
 
 // Set the code in the Monaco editor
 useEffect(() => {
-  sandbox.setText(`const greet = (): string => "Hi👋";`);
+  setCode(`const greet = (): string => "Hi👋";`);
+  formatCode();
 }, []);
 
 // Listen for changes to the code in the Monaco editor
@@ -131,7 +168,7 @@ npm init typescript-playground-plugin playground-my-plugin
 
 For convenience, this repo contains the `CONTRIBUTING.md` file included in the official plugin template. This document contains useful information about how to work with the plugins.
 
-The `src/types` directory contains all of the TypeScript type definitions for the TypeScript Playground Plugin API. This is the best place to find the various config options, properties, and methods that are available.
+The `src/plugin/vendor` directory contains all of the TypeScript type definitions for the TypeScript Playground Plugin API. This is the best place to find the various config options, properties, and methods that are available.
 
 ### Need inspiration?
 

@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["src/types"]
+    "typeRoots": ["src/types", "src/plugin/vendor"]
   },
   "exclude": ["node_modules"]
 }
