@@ -42,10 +42,11 @@ export const Provider: React.FC<ProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    sandbox.editor.onDidChangeModelDecorations(() => {
+    const disposable = sandbox.editor.onDidChangeModelDecorations(() => {
       const allMarkers = sandbox.monaco.editor.getModelMarkers({});
       setMarkers(allMarkers);
     });
+    () => disposable.dispose();
   }, []);
 
   useEffect(() => {

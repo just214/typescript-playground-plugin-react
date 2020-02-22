@@ -27,6 +27,9 @@ const customPlugin: import("./plugin/vendor/playground").PlaygroundPlugin = {
   },
   modelChangedDebounce(_, model) {
     createCustomEvent("modelChangedDebounce", model);
+  },
+  willUnmount(_, container) {
+    ReactDOM.unmountComponentAtNode(container);
   }
 };
 
