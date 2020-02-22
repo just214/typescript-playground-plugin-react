@@ -82,7 +82,6 @@ This hooks provides all of the method and properties provided by the Plugin API.
 | showModal | `(code: string, subtitle?: string, links?: string[]) => void` | From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide.                                                                                                                                                                                                                                                                 |
 | flashInfo | `(message: string) => void`                                   | From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen.                                                                                                                                                                                                                                                                      |
 
-Example
 
 ```tsx
 const {
@@ -94,14 +93,17 @@ const {
   showModal
 } = usePlayground({ debounce: true });
 
-// Update the code in the Monaco editor
+// Here are some examples of things you can do:
+
+// Set the code in the Monaco editor
 useEffect(() => {
-  sandbox.setText('const greet = (): string => "Hi👋";');
+  sandbox.setText(`const greet = (): string => "Hi👋";`);
 }, []);
 
 // Listen for changes to the code in the Monaco editor
 useEffect(() => {
-  console.log("The editor code changed to: ", code);
+  flashInfo("The code was updated.")
+  showModal(code, "Here is your code")
 }, [code]);
 ```
 
@@ -109,7 +111,7 @@ useEffect(() => {
 
 This library works with normal CSS stylesheets out of the box by inlining them using PostCSS. It also includes [Goober](https://github.com/cristianbote/goober), a super light-weight (<1KB) CSS-in-JS library. There are examples of both styling approaches in `src/App.tsx`. Any other styling solutions may require additional rollup configuration.
 
-The `container` prop provided to the `App` component contains the `div` that wraps the entire sidebar, which you can apply styles to. Be careful as this will affect all tabs in the sidebar.
+The `container` provided by the `usePlayground` hook can also be styled. Be careful as this will affect all tabs in the sidebar.
 
 ## More about TypeScript Playground Plugins
 
