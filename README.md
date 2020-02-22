@@ -82,12 +82,12 @@ This hooks provides all of the method and properties provided by the Plugin API.
 
 | Name | Description |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **container** | `HTMLDivElement`  <br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
-| **sandbox** | `object`  <br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/types/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
-| **modal** | `object`  <br /> The model is an object which monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. |
-| **code** | `string`  <br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Same as `sandbox.getText()` |
-| **showModal** | `(code: string, subtitle?: string, links?: string[]) => void`  <br /> From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide. |
-| **flashInfo** | `(message: string) => void`  <br /> From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen. |
+| **container** | `HTMLDivElement`  <br /><br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
+| **sandbox** | `object`  <br /><br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/types/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
+| **modal** | `object`  <br /><br /> The model is an object which monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. |
+| **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Same as `sandbox.getText()` |
+| **showModal** | `(code: string, subtitle?: string, links?: string[]) => void`  <br /><br /> From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide. |
+| **flashInfo** | `(message: string) => void`  <br /><br /> From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen. |
 
 ```tsx
 const {
