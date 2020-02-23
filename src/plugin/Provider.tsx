@@ -15,8 +15,8 @@ const defaultPrettierConfig: Options = {
 
 type Model = import("monaco-editor").editor.ITextModel;
 type ModelMarker = import("monaco-editor").editor.IMarker;
-type FlashInfo = (message: string) => void;
-type ShowModal = {
+export type FlashInfo = (message: string) => void;
+export type ShowModal = {
   (code: string, subtitle?: string, links?: string[]): void;
 };
 
@@ -49,7 +49,7 @@ export const Provider: React.FC<ProviderProps> = ({
   const [debounce, setDebounce] = useState(false);
 
   const listenerFn = useCallback(
-    (evt: any): void => {
+    (evt): void => {
       setModel({ ...evt.detail.model });
       _setCode(sandbox.getText());
     },

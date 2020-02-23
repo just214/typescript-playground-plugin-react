@@ -1,3 +1,5 @@
+import {ShowModal, FlashInfo} from '../plugin/Provider'
+
 declare module "*.jpeg";
 declare module "*.jpg";
 declare module "*.png";
@@ -7,8 +9,8 @@ declare global {
   interface Window {
     playground: {
       ui: {
-        showModal: any;
-        flashInfo: (message: string) => void;
+        showModal: ShowModal;
+        flashInfo: FlashInfo;
       };
     };
     ts: typeof window.ts

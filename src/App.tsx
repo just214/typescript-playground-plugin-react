@@ -1,8 +1,8 @@
 import React from "react";
 import { css } from "goober";
 import { usePlugin } from "./plugin";
-import logo from "./assets/logo.svg";
 import "./App.css";
+import logo from "./assets/logo.svg";
 
 const { useEffect } = React;
 
@@ -18,12 +18,12 @@ const App: React.FC = () => {
     formatCode,
     markers,
     setDebounce,
+    showModal,
     flashInfo,
     prettier
-    // sandbox,
-    // model,
+    // sandbox
+    // model
     // container,
-    // showModal,
   } = usePlugin();
 
   setDebounce(true);
@@ -52,6 +52,14 @@ const App: React.FC = () => {
 
   function handlePrettierFormat() {
     prettier();
+  }
+
+  function handleShowModal() {
+    showModal(code, `Here is your code!`);
+  }
+
+  function handleShowFlash() {
+    flashInfo("Flash!");
   }
 
   const renderMarkers = markers
@@ -87,6 +95,14 @@ const App: React.FC = () => {
       </button>
       <button className={buttonClass} onClick={handlePrettierFormat}>
         Format with Prettier
+      </button>
+
+      <button className={buttonClass} onClick={handleShowModal}>
+        Show Modal
+      </button>
+
+      <button className={buttonClass} onClick={handleShowFlash}>
+        Flash Info
       </button>
 
       <button className={buttonClass} onClick={handleClear}>
