@@ -6,9 +6,10 @@ import logo from "./assets/logo.svg";
 
 const { useEffect } = React;
 
+const greetingComment = "// Welcome to your TypeScript Playground Plugin!\n\n";
 const exampleCode = {
-  start: "function echo(arg) { return arg};",
-  end: "function echo<T>(arg:T): T {return arg;}"
+  start: greetingComment + "function echo(arg) { return arg};",
+  end: greetingComment + "function echo<T>(arg:T): T {return arg;}"
 };
 
 const App: React.FC = () => {
@@ -29,7 +30,7 @@ const App: React.FC = () => {
   setDebounce(true);
 
   useEffect(() => {
-    setCode(exampleCode.start, { format: "prettier" });
+    setCode(exampleCode.start);
   }, [setCode]);
 
   useEffect(() => {

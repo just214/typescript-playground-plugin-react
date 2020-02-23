@@ -85,6 +85,7 @@ export const Provider: React.FC<ProviderProps> = ({
         const prettyCode = prettierLib.format(value, defaultPrettierConfig);
         sandbox.setText(prettyCode);
       } else if (options && options.format === "monaco") {
+        sandbox.setText(value);
         sandbox.editor.getAction("editor.action.formatDocument").run();
       } else {
         sandbox.setText(value);

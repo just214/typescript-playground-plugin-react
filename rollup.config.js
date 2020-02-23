@@ -17,18 +17,14 @@ export default {
     format: "amd"
   },
   plugins: [
-    eslint(),
-    postcss({
-      plugins: [],
-      minimize: true,
-      sourceMap: "inline"
-    }),
+    postcss({ minimize: true }),
     replace({
       "process.env.NODE_ENV": JSON.stringify(
         isProd ? "production" : "development"
       )
     }),
     image(),
+    eslint({ throwOnError: true }),
     resolve({
       extensions,
       modulesOnly: false

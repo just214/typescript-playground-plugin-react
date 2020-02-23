@@ -7,13 +7,13 @@
   "author": "Justin Wilkerson <gojutin@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npm run killport && npm run build:dev && npm run bootstrap",
-    "bootstrap": "concurrently \"npm run watch\" \"npm run serve\" \"npm run open:playground\"",
+    "start": "npm run killport && npm run build:dev && npm run launch",
+    "launch": "concurrently \"npm run watch\" \"npm run serve\" \"npm run open:playground\"",
     "watch": "cross-env NODE_ENV=development rollup -c -w",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
     "build:prod": "cross-env NODE_ENV=production rollup -c",
     "open:playground": "open-cli https://www.typescriptlang.org/v2/en/play",
-    "killport": "npx kill-port 5000",
+    "killport": "kill-port 5000",
     "serve": "serve dist"
   },
   "dependencies": {
