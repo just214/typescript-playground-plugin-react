@@ -85,15 +85,17 @@ This hooks provides all of the method and properties provided by the Plugin API.
 | Name | Description |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Alias for `sandbox.getText()` |
-| **setCode** | `(code: string) => void`  <br /><br /> Set the code in the Monaco editor. Alias for `sandbox.setText()`  |
+| **setCode** | `(code: string, options: {format: "prettier" | "monaco"}) => void`  <br /><br /> Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Alias for `sandbox.setText()`  |
 | **formatCode** | `() => void`  <br /><br /> Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`  |
-| **markers** | `IMarker[]`  <br /><br /> Alias for `sandbox.monaco.editor.getModelMarkers({})` that is kept in sync via `sandbox.editor.onDidChangeModelDecorations`.    |
+| **prettier** | `prettier(config?: Options) => string`  <br /><br /> Format the code in the Monaco editor with prettier. Accepts a prettier config object.
+| **markers** | `(IMarker & {key: string})[]`  <br /><br /> Alias for `sandbox.monaco.editor.getModelMarkers({})` with added unique `key` property. Kept in sync via `sandbox.editor.onDidChangeModelDecorations`.    |
 | **setDebounce** | `(debounce: boolean) => void`  <br /><br /> Optionally debounce the `modelChange` event from the Plugin API. |
 | **sandbox** | `object`  <br /><br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/plugin/vendor/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
 | **modal** | `object`  <br /><br /> The model is an object which monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. |
 | **container** | `HTMLDivElement`  <br /><br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
 | **showModal** | `(code: string, subtitle?: string, links?: string[]) => void`  <br /><br /> From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide. |
 | **flashInfo** | `(message: string) => void`  <br /><br /> From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen. |
+
 
 
 
@@ -126,6 +128,7 @@ const {
   code,
   setCode,
   formatCode,
+  prettier,
   markers,
   setDebounce,
   sandbox,
@@ -137,10 +140,12 @@ const {
 
 // Here are some examples of things you can do:
 
+setDebounce(true);
+
 // Set the code in the Monaco editor
 useEffect(() => {
-  setCode(`const greet = (): string => "Hi👋";`);
-  formatCode();
+  const defaultCode = `const greet = (): string => "Hi👋";`
+  setCode(defaultCode, {format: "prettier"});
 }, []);
 
 // Listen for changes to the code in the Monaco editor
@@ -148,6 +153,12 @@ useEffect(() => {
   flashInfo("The code was updated.")
   showModal(code, "Here is your code")
 }, [code]);
+
+const renderMarkers = markers.map(marker => {
+  return <div key={marker.key}>{marker.message}</div>
+})
+
+// See App.tsx for additional usage examples
 ```
 
 ## Styling your plugin

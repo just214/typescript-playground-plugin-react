@@ -24,7 +24,7 @@ export default {
     replace({
       "process.env.NODE_ENV": JSON.stringify(
         isProd ? "production" : "development"
-      )
+      ),
     }),
     image(),
     resolve({
@@ -32,7 +32,9 @@ export default {
       modulesOnly: false
     }),
     commonjs({
-      include: /node_modules/
+      include: /node_modules/,
+      // For prettier/parser-typescript
+      ignore: ["@microsoft/typescript-etw"]
     }),
     babel({
       extensions,

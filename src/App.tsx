@@ -7,8 +7,8 @@ import "./App.css";
 const { useEffect } = React;
 
 const exampleCode = {
-  start: "function echo(arg) {\n  return arg;\n}",
-  end: "function echo<T>(arg:T): T {\n  return arg;\n}"
+  start: "function echo(arg) { return arg};",
+  end: "function echo<T>(arg:T): T {return arg;}"
 };
 
 const App: React.FC = () => {
@@ -22,13 +22,14 @@ const App: React.FC = () => {
     model,
     container,
     flashInfo,
-    showModal
+    showModal,
+    prettier
   } = usePlugin();
 
   setDebounce(true);
 
   useEffect(() => {
-    setCode(exampleCode.start);
+    setCode(exampleCode.start, { format: "prettier" });
   }, []);
 
   useEffect(() => {
@@ -41,13 +42,16 @@ const App: React.FC = () => {
     flashInfo("Cleared!");
   }
 
-  function handleOpenModal() {
-    showModal(code, "Here is your code.");
+  function handleFixCode() {
+    setCode(exampleCode.end, { format: "prettier" });
   }
 
-  function handleFixCode() {
-    setCode(exampleCode.end);
+  function handleMonacoFormat() {
     formatCode();
+  }
+
+  function handlePrettierFormat() {
+    prettier();
   }
 
   const renderMarkers = markers
@@ -55,7 +59,7 @@ const App: React.FC = () => {
     .map(marker => {
       return (
         <div
-          key={marker.code?.toString()}
+          key={marker.key}
           className={css`
             margin-top: 20px;
           `}
@@ -78,9 +82,13 @@ const App: React.FC = () => {
       <button className={buttonClass} onClick={handleFixCode}>
         Fix the Code
       </button>
-      <button className={buttonClass} onClick={handleOpenModal}>
-        Open the Modal
+      <button className={buttonClass} onClick={handleMonacoFormat}>
+        Format with Monaco
       </button>
+      <button className={buttonClass} onClick={handlePrettierFormat}>
+        Format with Prettier
+      </button>
+
       <button className={buttonClass} onClick={handleClear}>
         Clear the Editor
       </button>
@@ -113,7 +121,7 @@ const buttonClass = css`
   display: inline-block;
   margin: 5px;
   padding: 5px;
-  min-width: 120px;
+  min-width: 150px;
   color: ${colors.blue};
   background: transparent;
   font-size: 0.9rem;

@@ -11,5 +11,6 @@ declare global {
         flashInfo: (message: string) => void;
       };
     };
+    ts: typeof window.ts
   }
 }
