@@ -85,7 +85,7 @@ This hooks provides all of the method and properties provided by the Plugin API.
 | Name | Description |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Alias for `sandbox.getText()` |
-| **setCode** | `(code: string, options: {format: "prettier" | "monaco"}) => void` <br /><br /> Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Alias for `sandbox.setText()`  |
+| **setCode** | `(code: string, options: {format: "prettier" \| "monaco"}) => void` <br /><br /> Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Alias for `sandbox.setText()`  |
 | **formatCode** | `() => void`  <br /><br /> Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`  |
 | **prettier** | `prettier(config?: Options) => string`  <br /><br /> Format the code in the Monaco editor with Prettier. Accepts a Prettier config object.
 | **markers** | `(IMarker & {key: string})[]`  <br /><br /> Alias for `sandbox.monaco.editor.getModelMarkers({})` with added unique `key` property. Kept in sync via `sandbox.editor.onDidChangeModelDecorations`.    |
