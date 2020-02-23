@@ -12,7 +12,7 @@
     "watch": "cross-env NODE_ENV=development rollup -c -w",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
     "build:prod": "cross-env NODE_ENV=production rollup -c",
-    "open:playground": "open https://www.typescriptlang.org/v2/en/play",
+    "open:playground": "open-cli https://www.typescriptlang.org/v2/en/play",
     "serve": "serve dist"
   },
   "dependencies": {
@@ -46,6 +46,7 @@
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
     "monaco-editor": "^0.20.0",
+    "open-cli": "^5.0.0",
     "prettier": "^1.19.1",
     "rollup": "^1.31.1",
     "rollup-plugin-babel": "^4.3.3",

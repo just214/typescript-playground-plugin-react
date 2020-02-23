@@ -18,12 +18,12 @@ const App: React.FC = () => {
     formatCode,
     markers,
     setDebounce,
+    flashInfo,
+    prettier
     // sandbox,
     // model,
     // container,
-    flashInfo,
     // showModal,
-    prettier
   } = usePlugin();
 
   setDebounce(true);
