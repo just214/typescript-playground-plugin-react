@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "goober";
 import { usePlugin } from "./plugin";
 import "./App.css";
+// @ts-ignore TODO: Fix this
 import logo from "./assets/logo.svg";
 
 const { useEffect } = React;
@@ -103,7 +104,7 @@ const App: React.FC = () => {
       </button>
 
       <button className={buttonClass} onClick={handleShowFlash}>
-        Flash Info
+        Show Flash
       </button>
 
       <button className={buttonClass} onClick={handleClear}>

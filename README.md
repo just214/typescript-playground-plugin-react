@@ -2,7 +2,7 @@
 
 Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/dev/playground-plugins/) with [React](https://reactjs.org/).
 
-> 🚧 This project is experimental. Please use with caution.
+> 🚧 This project is experimental so please use with caution. Also, plugins only work in Chromium based browsers. 
 
 ## Table Of Contents
 
@@ -14,13 +14,13 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 5. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
 
 ## Features
-✔️ Write your TypeScript Playground plugin in React and TypeScript.
+✅ Write your TypeScript Playground plugin in React and TypeScript.
 
-✔️ Interact with the Playground using a strongly-typed React hook.
+✅ Interact with the Playground using a strongly-typed React hook.
 
-✔️ Create styles with stylesheets or CSS-in-JS with Goober.
+✅ Create styles with stylesheets or CSS-in-JS with Goober.
 
-✔️ Linting with ESLint
+✅ Linting with ESLint
 
 ## About
 

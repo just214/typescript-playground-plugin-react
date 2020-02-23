@@ -3,7 +3,10 @@ import {ShowModal, FlashInfo} from '../plugin/Provider'
 declare module "*.jpeg";
 declare module "*.jpg";
 declare module "*.png";
-declare module "*.svg";
+declare module '*.svg' {
+  const content: any
+  export default content;
+}
 
 declare global {
   interface Window {
@@ -13,6 +16,5 @@ declare global {
         flashInfo: FlashInfo;
       };
     };
-    ts: typeof window.ts
   }
 }

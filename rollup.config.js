@@ -17,13 +17,13 @@ export default {
     format: "amd"
   },
   plugins: [
+    image(),
     postcss({ minimize: true }),
     replace({
       "process.env.NODE_ENV": JSON.stringify(
         isProd ? "production" : "development"
       )
     }),
-    image(),
     eslint({ throwOnError: true }),
     resolve({
       extensions,
