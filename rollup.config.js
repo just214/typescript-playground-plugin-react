@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import babel from "rollup-plugin-babel";
 import postcss from "rollup-plugin-postcss";
 import image from "@rollup/plugin-image";
+import { eslint } from "rollup-plugin-eslint";
 import { terser } from "rollup-plugin-terser";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -16,6 +17,7 @@ export default {
     format: "amd"
   },
   plugins: [
+    eslint(),
     postcss({
       plugins: [],
       minimize: true,
@@ -24,7 +26,7 @@ export default {
     replace({
       "process.env.NODE_ENV": JSON.stringify(
         isProd ? "production" : "development"
-      ),
+      )
     }),
     image(),
     resolve({
@@ -47,7 +49,6 @@ export default {
         "@babel/preset-typescript"
       ]
     }),
-
     isProd && terser()
   ]
 };

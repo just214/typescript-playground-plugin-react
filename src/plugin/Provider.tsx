@@ -48,10 +48,13 @@ export const Provider: React.FC<ProviderProps> = ({
   const [markers, setMarkers] = useState<ModelMarker[]>([]);
   const [debounce, setDebounce] = useState(false);
 
-  const listenerFn = useCallback((evt: any): void => {
-    setModel({ ...evt.detail.model });
-    _setCode(sandbox.getText());
-  }, []);
+  const listenerFn = useCallback(
+    (evt: any): void => {
+      setModel({ ...evt.detail.model });
+      _setCode(sandbox.getText());
+    },
+    [sandbox]
+  );
 
   useEffect(() => {
     const disposable = sandbox.editor.onDidChangeModelDecorations(() => {
@@ -65,16 +68,16 @@ export const Provider: React.FC<ProviderProps> = ({
         });
       setMarkers(allMarkers);
     });
-    () => disposable.dispose();
-  }, []);
+    return () => disposable.dispose();
+  }, [sandbox]);
 
   useEffect(() => {
     const eventName = debounce ? "modelChangedDebounce" : "modelChanged";
     window.addEventListener(eventName, listenerFn);
     const otherEventName = debounce ? "modelChanged" : "modelChangedDebounce";
     window.removeEventListener(otherEventName, listenerFn, false);
-    () => window.removeEventListener(eventName, listenerFn, false);
-  }, [debounce]);
+    return () => window.removeEventListener(eventName, listenerFn, false);
+  }, [debounce, listenerFn]);
 
   const setCode = useCallback(
     (value: string, options?: { format: "prettier" | "monaco" }) => {
@@ -87,12 +90,12 @@ export const Provider: React.FC<ProviderProps> = ({
         sandbox.setText(value);
       }
     },
-    []
+    [sandbox]
   );
 
   const formatCode = useCallback(() => {
     return sandbox.editor.getAction("editor.action.formatDocument").run();
-  }, []);
+  }, [sandbox.editor]);
 
   const prettier = useCallback(
     (config?: Options) => {
@@ -103,7 +106,7 @@ export const Provider: React.FC<ProviderProps> = ({
 
       sandbox.setText(prettyCode);
     },
-    [code]
+    [code, sandbox]
   );
 
   // @ts-ignore

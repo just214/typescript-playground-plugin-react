@@ -20,6 +20,8 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 
 ✔️ Create styles with stylesheets or CSS-in-JS with Goober.
 
+✔️ Linting with ESLint
+
 ## About
 
 The TypeScript Playground V3 beta comes packed with lots of new features, including the ability to create plugins. Per the TypeScript docs:

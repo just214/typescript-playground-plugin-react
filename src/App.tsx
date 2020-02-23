@@ -18,11 +18,11 @@ const App: React.FC = () => {
     formatCode,
     markers,
     setDebounce,
-    sandbox,
-    model,
-    container,
+    // sandbox,
+    // model,
+    // container,
     flashInfo,
-    showModal,
+    // showModal,
     prettier
   } = usePlugin();
 
@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setCode(exampleCode.start, { format: "prettier" });
-  }, []);
+  }, [setCode]);
 
   useEffect(() => {
     console.log(`The editor code changed:`);
