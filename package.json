@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run killport && npm run build:dev && npm run launch",
-    "launch": "concurrently \"npm run watch\" \"npm run serve\" \"npm run open:playground\"",
+    "launch": "concurrently \"npm:watch\" \"npm:serve\" \"npm:open:playground\"",
     "watch": "cross-env NODE_ENV=development rollup -c -w",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
     "build:prod": "cross-env NODE_ENV=production rollup -c",
@@ -46,6 +46,7 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
+    "kill-port": "^1.6.0",
     "monaco-editor": "^0.20.0",
     "open-cli": "^5.0.0",
     "prettier": "^1.19.1",
