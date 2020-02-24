@@ -2,7 +2,7 @@
 
 Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/dev/playground-plugins/) with [React](https://reactjs.org/).
 
-> 🚧 This project is experimental so please use with caution. Also, plugins only work in Chromium based browsers. 
+> 🚧 This project is experimental so please use with caution. If you have any ideas on how to improve this library, any contributions are welcomed. Also, TypeScript Playground plugins currently only work in Chromium based browsers.
 
 ## Table Of Contents
 
