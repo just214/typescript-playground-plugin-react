@@ -7,11 +7,12 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 ## Table Of Contents
 
 1. [Features](#features)
-1. [About](#about)
-1. [Getting Started](#getting-started)
-1. [usePlugin Hook](#usePlugin-hook)
-1. [Styling Your Plugin](#styling-your-plugin)
-1. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
+2. [About](#about)
+3. [Getting Started](#getting-started)
+4. [usePlugin Hook](#usePlugin-hook)
+5. [Styling Your Plugin](#styling-your-plugin)
+6. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
+7. [Todos] (#todos)
 
 ## Features
 
@@ -284,3 +285,14 @@ He also offered these plugin ideas in [this](https://www.reddit.com/r/typescript
 - Highlight TS vs JS code
 - Show all used types
 - Show dts files
+
+## TODOS
+
+In no particular order.
+
+- [ ] Add ability to import SVGs with `import` syntax without TypeScript errors.
+- [ ] Reload the TypeScript Playground browser tab on plugin changes if possible.
+- [ ] Add configuration for other styling solutions (Styled Component, Emotion, Styled JSX)
+- [ ] Add additional examples, including AST Tree.
+- [ ] Add ability to destructure named imports `import React, { useEffect } from "react";` if possible.
+- [ ] Incorporate Jest and React Testing Library.
