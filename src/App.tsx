@@ -23,8 +23,9 @@ const App: React.FC = () => {
     showModal,
     flashInfo,
     prettier
-    // sandbox
-    // model
+    // utils,
+    // sandbox,
+    // model,
     // container,
   } = usePlugin();
 
@@ -35,7 +36,7 @@ const App: React.FC = () => {
   }, [setCode]);
 
   useEffect(() => {
-    console.log(`The editor code changed:`);
+    console.log(`The editor code has changed:`);
     console.log(code);
   }, [code]);
 
@@ -132,6 +133,7 @@ const wrapperClass = css`
   h1,
   h3 {
     font-weight: 300;
+    line-height: 1;
   }
 `;
 

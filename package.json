@@ -2,19 +2,15 @@
   "private": true,
   "name": "typescript-playground-plugin-react",
   "description": "Easily create TypeScript Playground Plugins with React.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": "git@github.com:gojutin/typescript-playground-plugin-react.git",
   "author": "Justin Wilkerson <gojutin@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npm run killport && npm run build:dev && npm run launch",
-    "launch": "concurrently \"npm:watch\" \"npm:serve\" \"npm:open:playground\"",
+    "start": "npm run watch",
     "watch": "cross-env NODE_ENV=development rollup -c -w",
     "build:dev": "cross-env NODE_ENV=development rollup -c",
-    "build:prod": "cross-env NODE_ENV=production rollup -c",
-    "open:playground": "open-cli https://www.typescriptlang.org/v2/en/play",
-    "killport": "kill-port 5000",
-    "serve": "serve dist"
+    "build:prod": "cross-env NODE_ENV=production rollup -c"
   },
   "dependencies": {
     "goober": "^1.7.1",
@@ -37,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "2.x",
     "@typescript-eslint/parser": "2.x",
     "babel-eslint": "10.x",
+    "chalk": "^3.0.0",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.0",
     "eslint": "6.x",
@@ -46,7 +43,7 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
-    "kill-port": "^1.6.0",
+    "get-chrome-tabs": "^1.0.0",
     "monaco-editor": "^0.20.0",
     "open-cli": "^5.0.0",
     "prettier": "^1.19.1",
@@ -54,9 +51,11 @@
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-css-only": "^2.0.0",
     "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-execute": "^1.1.1",
     "rollup-plugin-postcss": "^2.1.1",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^5.2.0",
-    "serve": "^11.3.0",
     "typescript": "^3.8.2"
   }
 }

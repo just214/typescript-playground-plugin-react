@@ -1,5 +1,6 @@
 import React from "react";
 import { Sandbox } from "./vendor/playground";
+import { PluginUtils } from "./vendor/PluginUtils";
 import prettierLib from "prettier/standalone";
 import parserBabel from "prettier/parser-babylon";
 import parserTypescript from "prettier/parser-typescript";
@@ -37,16 +38,21 @@ export type PluginContextProps = {
   formatCode(): void;
   prettier(config?: Options): void;
   setDebounce(debounce: boolean): void;
+  utils: PluginUtils;
 };
 
-type ProviderProps = Pick<PluginContextProps, "sandbox" | "container">;
+type ProviderProps = Pick<
+  PluginContextProps,
+  "sandbox" | "container" | "utils"
+>;
 
 export const Provider: React.FC<ProviderProps> = ({
   sandbox,
   container,
+  utils,
   children
 }) => {
-  const [model, setModel] = useState<any>();
+  const [model, setModel] = useState<Model>();
   const [code, _setCode] = useState(sandbox.getText());
   const [markers, setMarkers] = useState<ModelMarker[]>([]);
   const [debounce, setDebounce] = useState(false);
@@ -126,7 +132,8 @@ export const Provider: React.FC<ProviderProps> = ({
     formatCode,
     setDebounce,
     markers,
-    prettier
+    prettier,
+    utils
   };
   return (
     <PluginContext.Provider value={value}>{children}</PluginContext.Provider>

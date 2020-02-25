@@ -8,12 +8,13 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 
 1. [Features](#features)
 1. [About](#about)
-2. [Getting Started](#getting-started)
-3. [usePlugin Hook](#usePlugin-hook)
-4. [Styling Your Plugin](#styling-your-plugin)
-5. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
+1. [Getting Started](#getting-started)
+1. [usePlugin Hook](#usePlugin-hook)
+1. [Styling Your Plugin](#styling-your-plugin)
+1. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
 
 ## Features
+
 ✅ Write your TypeScript Playground plugin in React and TypeScript.
 
 ✅ Interact with the Playground using a strongly-typed React hook.
@@ -36,7 +37,7 @@ This package allows you to use React as a replacement (or addition to) the DOM A
 
 #### How does it work?
 
-The TypeScript Playground Plugin API provides lifecycle methods that are used to interact with the playground. This library works by mounting a React app inside of the `didMount` method that the API exposes. The `modelChanged` and `modelChangedDebounce` API methods are called any time the code in the editor changes. Custom events are used to broadcast the changes to a context that wraps the app component.
+The TypeScript Playground Plugin API provides a factory function with lifecycle methods that are used to interact with the playground. This library works by mounting a React app inside of the `didMount` method that the API exposes. The `modelChanged` and `modelChangedDebounce` API methods are called any time the code in the editor changes. Custom events are used to broadcast the changes to a context that wraps the app component.
 
 ## Getting Started
 
@@ -62,7 +63,7 @@ cd typescript-playground-plugin-react && yarn
 yarn start
 ```
 
-This will start a development server in watch mode, serve the `dist` directory at `localhost:5000`, and automatically open the TypeScript Playground. As you edit any files in the `src` directory, the app will recompile and update `dist/index.js`, which is the file that is served to the TypeScript Playground.
+This will start a development server in watch mode, serve the `dist` directory at `localhost:5000`, and automatically open the TypeScript Playground in Chrome. As you edit any files in the `src` directory, the app will recompile and update `dist/index.js`, which is the file that is served to the TypeScript Playground.
 
 > _Note: This does not reload the browser when your files change. In order to see your changes, the browser will need to be manually reloaded each time you make changes to the plugin._
 
@@ -84,22 +85,45 @@ You can make customizations to your plugin by modifying the `customPlugin` objec
 
 This hooks provides all of the method and properties provided by the Plugin API. It accepts a optional config object and returns an object with these properties:
 
-| Name | Description |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **code** | `string`  <br /><br /> The current code in the Monaco editor. This value updates on change to the Monaco editor with optional debouncing. Alias for `sandbox.getText()` |
-| **setCode** | `(code: string, options: {format: "prettier" \| "monaco"}) => void` <br /><br /> Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Alias for `sandbox.setText()`  |
-| **formatCode** | `() => void`  <br /><br /> Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`  |
-| **prettier** | `prettier(config?: Options) => string`  <br /><br /> Format the code in the Monaco editor with Prettier. Accepts a Prettier config object.
-| **markers** | `(IMarker & {key: string})[]`  <br /><br /> Alias for `sandbox.monaco.editor.getModelMarkers({})` with added unique `key` property. Kept in sync via `sandbox.editor.onDidChangeModelDecorations`.    |
-| **setDebounce** | `(debounce: boolean) => void`  <br /><br /> Optionally debounce the `modelChange` event from the Plugin API. |
-| **sandbox** | `object`  <br /><br /> A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/plugin/vendor/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/). |
-| **modal** | `object`  <br /><br /> The model is an object which monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`. |
-| **container** | `HTMLDivElement`  <br /><br /> This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar. |
-| **showModal** | `(code: string, subtitle?: string, links?: string[]) => void`  <br /><br /> From `window.playground.ui` - This function accepts 3 arguments (code, subtitle, and links) and opens a model with the values you provide. |
-| **flashInfo** | `(message: string) => void`  <br /><br /> From `window.playground.ui` - This function accepts 1 argument (message) and and flashes a quick message in the center of the screen. |
+### **code**
 
+```typescript
+string
+```
 
+The current code in the Monaco editor saved as React state. This value updates on change to the Monaco editor with optional debouncing. Uses `sandbox.getText()`
 
+### **setCode**
+
+```typescript
+(code: string, options: {format: "prettier" | "monaco"}) => void
+```
+
+Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Uses `sandbox.setText()`.
+
+### **formatCode**
+
+```typescript
+() => void
+```
+
+Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`.
+
+### **prettier**
+
+```typescript
+(config?: Options) => string
+```
+
+Format the code in the Monaco editor with Prettier. Accepts a Prettier config object.
+
+### **markers**
+
+```typescript
+(IMarker & {key: string})[]
+```
+
+Alias for `sandbox.monaco.editor.getModelMarkers({})` with added unique `key` property. Kept in sync via `sandbox.editor.onDidChangeModelDecorations`.
 
 Here is the [type definition](https://github.com/Microsoft/monaco-editor/blob/master/monaco.d.ts#L875) for `IMarker`:
 
@@ -108,10 +132,12 @@ interface IMarker {
   owner: string;
   resource: Uri;
   severity: MarkerSeverity;
-  code?: string | {
-      value: string;
-      link: Uri;
-  };
+  code?:
+    | string
+    | {
+        value: string;
+        link: Uri;
+      };
   message: string;
   source?: string;
   startLineNumber: number;
@@ -123,7 +149,65 @@ interface IMarker {
 }
 ```
 
-#### Example `usePlugin` Usage
+### **setDebounce**
+
+```typescript
+(debounce: boolean) => void
+```
+Optionally debounce the `modelChange` event from the Plugin API. Per the Plugin docs, this is run on a delay and may not fire on every keystroke. The `code` property will be updated accordingly. 
+
+### **sandbox**
+
+```typescript
+object
+```
+
+A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/plugin/vendor/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/).
+
+### **modal**
+
+```typescript
+object
+```
+
+The model is an object which Monaco uses to keep track of text in the editor. You can find the full type definition at `node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts`.  
+
+### **container**
+
+```typescript
+HTMLDivElement
+```
+
+This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.
+
+### **showModal**
+
+```typescript
+(code: string, subtitle?: string, links?: string[]) => void
+```
+From `window.playground.ui` - This function accepts three arguments (code, subtitle, and links) and opens a model with the values you provide.
+
+### **flashInfo**
+
+```typescript
+(message: string) => void
+```
+From `window.playground.ui` - This function accepts one argument (message) and and flashes a quick message in the center of the screen. 
+
+### **utils**
+
+```typescript
+{
+  el: (str: string, el: string, container: Element) => void;, 
+  requireURL: (path: string) => string;, 
+  createASTTree: (node: Node) => HTMLDivElement;
+}
+```
+An object that contains three additional config options and functionality. `el`, `requireURL`, and `createASTTree`. See `src/plugin/vendor/pluginUtils.d.ts` for more information. 
+                                                                                                                           
+<hr />
+
+### Example `usePlugin` Usage
 
 ```tsx
 const {
@@ -146,19 +230,19 @@ setDebounce(true);
 
 // Set the code in the Monaco editor
 useEffect(() => {
-  const defaultCode = `const greet = (): string => "Hi👋";`
-  setCode(defaultCode, {format: "prettier"});
+  const defaultCode = `const greet = (): string => "Hi👋";`;
+  setCode(defaultCode, { format: "prettier" });
 }, []);
 
 // Listen for changes to the code in the Monaco editor
 useEffect(() => {
-  flashInfo("The code was updated.")
-  showModal(code, "Here is your code")
+  flashInfo("The code was updated.");
+  showModal(code, "Here is your code");
 }, [code]);
 
 const renderMarkers = markers.map(marker => {
-  return <div key={marker.key}>{marker.message}</div>
-})
+  return <div key={marker.key}>{marker.message}</div>;
+});
 
 // See App.tsx for additional usage examples
 ```
