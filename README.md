@@ -12,7 +12,7 @@ Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/
 4. [usePlugin Hook](#usePlugin-hook)
 5. [Styling Your Plugin](#styling-your-plugin)
 6. [More about TypeScript Playground Plugins](#more-about-typescript-playground-plugins)
-7. [Todos] (#todos)
+7. [Todos](#todos)
 
 ## Features
 
