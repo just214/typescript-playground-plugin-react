@@ -1,4 +1,5 @@
 import React from "react";
+import useResizeAware from "react-resize-aware";
 import { Sandbox } from "./vendor/playground";
 import { PluginUtils } from "./vendor/PluginUtils";
 const { useState, useEffect, createContext, useCallback } = React;
@@ -15,9 +16,15 @@ export type ShowModal = {
 
 export const PluginContext = createContext({});
 
+type Container = {
+  ref: HTMLDivElement;
+  width: number;
+  height: number;
+};
+
 export type PluginContextProps = {
   code: string;
-  container: HTMLDivElement;
+  container: Container;
   sandbox: Sandbox;
   model: Model;
   flashInfo: FlashInfo;
@@ -44,6 +51,7 @@ export const Provider: React.FC<ProviderProps> = ({
   const [code, _setCode] = useState(sandbox.getText());
   const [markers, setMarkers] = useState<ModelMarker[]>([]);
   const [debounce, setDebounce] = useState(false);
+  const [resizeListener, sizes] = useResizeAware();
 
   const listenerFn = useCallback(
     (evt): void => {
@@ -94,12 +102,17 @@ export const Provider: React.FC<ProviderProps> = ({
 
   const { showModal, flashInfo } = window.playground.ui;
 
+  const containerWithDimensions = {
+    ref: container,
+    ...sizes
+  };
+
   const value = {
     model,
     showModal,
     flashInfo,
     sandbox,
-    container,
+    container: containerWithDimensions,
     code,
     setCode,
     formatCode,
@@ -108,6 +121,9 @@ export const Provider: React.FC<ProviderProps> = ({
     utils
   };
   return (
-    <PluginContext.Provider value={value}>{children}</PluginContext.Provider>
+    <PluginContext.Provider value={value}>
+      {resizeListener}
+      {children}
+    </PluginContext.Provider>
   );
 };

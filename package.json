@@ -15,7 +15,8 @@
   "dependencies": {
     "goober": "^1.7.1",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "react-resize-aware": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

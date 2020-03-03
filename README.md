@@ -169,10 +169,10 @@ The model is an object which Monaco uses to keep track of text in the editor. Yo
 ### **container**
 
 ```typescript
-HTMLDivElement
+{ref: HTMLDivElement, width: number, height: number}
 ```
 
-This is the container `div` element that wraps the entire sidebar. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.
+This is an object that contains the container `div` element that wraps the entire sidebar as well as it's dimensions in reactive React state. You can wrap the dimension values in a `useEffect` to be notified of any changes to the size of the container. The React app is mounted to this element. Any style changes to this element will affect the entire sidebar.
 
 ### **showModal**
 

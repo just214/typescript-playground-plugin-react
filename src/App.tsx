@@ -21,11 +21,11 @@ const App: React.FC = () => {
     markers,
     setDebounce,
     showModal,
-    flashInfo
+    flashInfo,
+    container
     // utils,
     // sandbox,
     // model,
-    // container,
   } = usePlugin();
 
   setDebounce(true);
@@ -38,6 +38,12 @@ const App: React.FC = () => {
     console.log(`The editor code has changed:`);
     console.log(code);
   }, [code]);
+
+  useEffect(() => {
+    // Listen to changes of the container dimensions.
+    console.log("Container Width: ", container.width);
+    console.log("Container Height: ", container.height);
+  }, [container]);
 
   function handleClear() {
     setCode("");
