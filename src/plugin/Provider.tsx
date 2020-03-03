@@ -23,7 +23,7 @@ export type PluginContextProps = {
   flashInfo: FlashInfo;
   showModal: ShowModal;
   markers: (ModelMarker & { key: string })[];
-  setCode(value: string, options?: { format: "monaco" }): void;
+  setCode(value: string, options?: { format: boolean }): void;
   formatCode(): void;
   setDebounce(debounce: boolean): void;
   utils: PluginUtils;
@@ -77,8 +77,8 @@ export const Provider: React.FC<ProviderProps> = ({
   }, [debounce, listenerFn]);
 
   const setCode = useCallback(
-    (value: string, options?: { format: "monaco" }) => {
-      if (options && options.format === "monaco") {
+    (value: string, options?: { format: true }) => {
+      if (options && options.format) {
         sandbox.setText(value);
         sandbox.editor.getAction("editor.action.formatDocument").run();
       } else {

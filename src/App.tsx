@@ -45,10 +45,10 @@ const App: React.FC = () => {
   }
 
   function handleFixCode() {
-    setCode(exampleCode.end, { format: "monaco" });
+    setCode(exampleCode.end, { format: true });
   }
 
-  function handleMonacoFormat() {
+  function handleFormatCode() {
     formatCode();
   }
 
@@ -64,12 +64,7 @@ const App: React.FC = () => {
     .sort((a, b) => (a.startLineNumber >= b.startLineNumber ? 1 : -1))
     .map(marker => {
       return (
-        <div
-          key={marker.key}
-          className={css`
-            margin-top: 20px;
-          `}
-        >
+        <div key={marker.key} className={css``}>
           <p className={markerClass}>
             Line {marker.startLineNumber}:&nbsp;
             {marker.message}
@@ -88,8 +83,8 @@ const App: React.FC = () => {
       <button className={buttonClass} onClick={handleFixCode}>
         Fix the Code
       </button>
-      <button className={buttonClass} onClick={handleMonacoFormat}>
-        Format with Monaco
+      <button className={buttonClass} onClick={handleFormatCode}>
+        Format Code
       </button>
 
       <button className={buttonClass} onClick={handleShowModal}>
@@ -104,7 +99,13 @@ const App: React.FC = () => {
         Clear the Editor
       </button>
 
-      {!!markers.length && renderMarkers}
+      <div
+        className={css`
+          margin-top: 2em;
+        `}
+      >
+        {!!markers.length && renderMarkers}
+      </div>
     </div>
   );
 };

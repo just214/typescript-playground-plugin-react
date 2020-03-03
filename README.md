@@ -97,10 +97,10 @@ The current code in the Monaco editor saved as React state. This value updates o
 ### **setCode**
 
 ```typescript
-(code: string, options: {format: "monaco"}) => void
+(code: string, options: {format: boolean}) => void
 ```
 
-Set the code in the Monaco editor with optional formatting with Monaco. Uses `sandbox.setText()`.
+Set the code in the Monaco editor with optional formatting. Uses `sandbox.setText()`.
 
 ### **formatCode**
 
@@ -224,7 +224,7 @@ setDebounce(true);
 // Set the code in the Monaco editor
 useEffect(() => {
   const defaultCode = `const greet = (): string => "Hi👋";`;
-  setCode(defaultCode, { format: "monaco" });
+  setCode(defaultCode, { format: true });
 }, []);
 
 // Listen for changes to the code in the Monaco editor
