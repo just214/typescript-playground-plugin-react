@@ -39,8 +39,6 @@ export default {
     }),
     commonjs({
       include: /node_modules/,
-      // For prettier/parser-typescript
-      ignore: ["@microsoft/typescript-etw"],
       sourceMap: false
     }),
     babel({

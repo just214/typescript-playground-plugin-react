@@ -97,10 +97,10 @@ The current code in the Monaco editor saved as React state. This value updates o
 ### **setCode**
 
 ```typescript
-(code: string, options: {format: "prettier" | "monaco"}) => void
+(code: string, options: {format: "monaco"}) => void
 ```
 
-Set the code in the Monaco editor with optional formatting with Prettier or Monaco. Uses `sandbox.setText()`.
+Set the code in the Monaco editor with optional formatting with Monaco. Uses `sandbox.setText()`.
 
 ### **formatCode**
 
@@ -110,13 +110,6 @@ Set the code in the Monaco editor with optional formatting with Prettier or Mona
 
 Format the code in the Monaco editor. Alias for `sandbox.editor.getAction("editor.action.formatDocument").run()`.
 
-### **prettier**
-
-```typescript
-(config?: Options) => string
-```
-
-Format the code in the Monaco editor with Prettier. Accepts a Prettier config object.
 
 ### **markers**
 
@@ -215,7 +208,6 @@ const {
   code,
   setCode,
   formatCode,
-  prettier,
   markers,
   setDebounce,
   sandbox,
@@ -232,7 +224,7 @@ setDebounce(true);
 // Set the code in the Monaco editor
 useEffect(() => {
   const defaultCode = `const greet = (): string => "Hi👋";`;
-  setCode(defaultCode, { format: "prettier" });
+  setCode(defaultCode, { format: "monaco" });
 }, []);
 
 // Listen for changes to the code in the Monaco editor

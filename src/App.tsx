@@ -21,8 +21,7 @@ const App: React.FC = () => {
     markers,
     setDebounce,
     showModal,
-    flashInfo,
-    prettier
+    flashInfo
     // utils,
     // sandbox,
     // model,
@@ -46,15 +45,11 @@ const App: React.FC = () => {
   }
 
   function handleFixCode() {
-    setCode(exampleCode.end, { format: "prettier" });
+    setCode(exampleCode.end, { format: "monaco" });
   }
 
   function handleMonacoFormat() {
     formatCode();
-  }
-
-  function handlePrettierFormat() {
-    prettier();
   }
 
   function handleShowModal() {
@@ -95,9 +90,6 @@ const App: React.FC = () => {
       </button>
       <button className={buttonClass} onClick={handleMonacoFormat}>
         Format with Monaco
-      </button>
-      <button className={buttonClass} onClick={handlePrettierFormat}>
-        Format with Prettier
       </button>
 
       <button className={buttonClass} onClick={handleShowModal}>
