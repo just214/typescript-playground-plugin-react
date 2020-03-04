@@ -16,5 +16,7 @@ declare global {
         flashInfo: FlashInfo;
       };
     };
+    reactDOM: any;
+    react: any;
   }
 }

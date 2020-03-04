@@ -9,7 +9,10 @@ import progress from "rollup-plugin-progress";
 import serve from "rollup-plugin-serve";
 import { eslint } from "rollup-plugin-eslint";
 import { terser } from "rollup-plugin-terser";
+import externalGlobals from "rollup-plugin-external-globals";
+import ignore from "rollup-plugin-ignore";
 import analyze from "rollup-plugin-analyzer";
+import filesize from "rollup-plugin-filesize";
 
 const isProd = process.env.NODE_ENV === "production";
 // const isWatch = process.env.ROLLUP_WATCH;
@@ -17,16 +20,19 @@ const extensions = [".js", ".ts", ".tsx"];
 
 export default {
   input: "src/index.tsx",
+  external: ["typescript", "react"],
   treeshake: true,
   output: {
     file: "dist/index.js",
     format: "amd"
   },
   plugins: [
+    isProd && filesize(),
     isProd &&
       analyze({
         summaryOnly: true
       }),
+
     progress(),
     execute("node scripts/open-playground"),
     image(),
@@ -56,6 +62,8 @@ export default {
         "@babel/preset-typescript"
       ]
     }),
+    ignore(["react"]),
+    externalGlobals({ react: "window.react" }),
     isProd && terser(),
     !isProd &&
       serve({
