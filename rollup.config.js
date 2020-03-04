@@ -9,6 +9,7 @@ import progress from "rollup-plugin-progress";
 import serve from "rollup-plugin-serve";
 import { eslint } from "rollup-plugin-eslint";
 import { terser } from "rollup-plugin-terser";
+import analyze from "rollup-plugin-analyzer";
 
 const isProd = process.env.NODE_ENV === "production";
 // const isWatch = process.env.ROLLUP_WATCH;
@@ -16,13 +17,16 @@ const extensions = [".js", ".ts", ".tsx"];
 
 export default {
   input: "src/index.tsx",
-  sourcemap: false,
   treeshake: true,
   output: {
     file: "dist/index.js",
     format: "amd"
   },
   plugins: [
+    isProd &&
+      analyze({
+        summaryOnly: true
+      }),
     progress(),
     execute("node scripts/open-playground"),
     image(),
