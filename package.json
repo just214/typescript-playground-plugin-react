@@ -9,6 +9,7 @@
   "scripts": {
     "start": "npm run watch",
     "watch": "cross-env NODE_ENV=development rollup -c -w",
+    "lint": "eslint . --ext .ts,.tsx",
     "build": "cross-env NODE_ENV=production rollup -c"
   },
   "dependencies": {

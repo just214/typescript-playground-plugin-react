@@ -2,7 +2,9 @@
 
 Easily create TypeScript [Playground Plugins](https://www.typescriptlang.org/v2/dev/playground-plugins/) with [React](https://reactjs.org/).
 
-> 🚧 This project is experimental so please use with caution. If you have any ideas on how to improve this library, any contributions are welcomed. Also, TypeScript Playground plugins currently only work in Chromium based browsers.
+> 🚧 This project is experimental. If you have any ideas on how to improve this library, any contributions are welcomed. Also, TypeScript Playground plugins currently only work in Chromium based browsers.
+
+Prefer Svelte? Check out [https://github.com/gojutin/typescript-playground-plugin-svelte](https://github.com/gojutin/typescript-playground-plugin-svelte).
 
 ## Table Of Contents
 
@@ -158,7 +160,7 @@ object
 
 A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the TypeScript playground. This object provides several properties and methods to interact with the playground. See all of the available types in `src/plugin/vendor/sandbox.d.ts` and read more about the sandbox at [http://www.typescriptlang.org/v2/dev/sandbox/](http://www.typescriptlang.org/v2/dev/sandbox/).
 
-### **modal**
+### **model**
 
 ```typescript
 object
@@ -214,7 +216,8 @@ const {
   model,
   container,
   flashInfo,
-  showModal
+  showModal,
+  utils
 } = usePlugin();
 
 // Here are some examples of things you can do:
@@ -266,17 +269,19 @@ The `src/plugin/vendor` directory contains all of the TypeScript type definition
 
 [https://github.com/orta/playground-slides](https://github.com/orta/playground-slides)
 
-He also offered these plugin ideas in [this](https://www.reddit.com/r/typescript/comments/eywcn8/learn_how_to_make_a_typescript_playground_plugin/fglyuon/) reddit thread.
+He also offered these plugin ideas in [this](https://github.com/microsoft/TypeScript-Website/issues/221) issue.
 
-- Explain the parts of a complex TS type
-- Show TS -> Flow interfaces
-- Run tutorials in the playground against live code
+- An LSP-ish Playground where you can make see the response to specific calls
+- An English explainer which explains a complex TS type
+- Convert TS dts -> Flow interfaces(flowgen)
+- Run tutorials in the playground against live code as a learning tool
 - AST Viewer
 - ts-query runner
 - codemod runner
-- Highlight TS vs JS code
-- Show all used types
-- Show dts files
+- Highlight TS vs JS (or type vs value) parts of some code code
+- Show all used types in a file
+- Show dts files in the current workspace
+- Edit an ambient dts file
 
 ## TODOS
 

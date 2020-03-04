@@ -16,7 +16,7 @@ export type ShowModal = {
 
 export const PluginContext = createContext({});
 
-type Container = {
+type ContainerObject = {
   ref: HTMLDivElement;
   width: number;
   height: number;
@@ -24,7 +24,7 @@ type Container = {
 
 export type PluginContextProps = {
   code: string;
-  container: Container;
+  container: ContainerObject;
   sandbox: Sandbox;
   model: Model;
   flashInfo: FlashInfo;
@@ -102,7 +102,7 @@ export const Provider: React.FC<ProviderProps> = ({
 
   const { showModal, flashInfo } = window.playground.ui;
 
-  const containerWithDimensions = {
+  const containerWithDimensions: ContainerObject = {
     ref: container,
     ...sizes
   };
