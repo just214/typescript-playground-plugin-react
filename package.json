@@ -12,6 +12,9 @@
     "lint": "eslint . --ext .ts,.tsx",
     "build": "cross-env NODE_ENV=production rollup -c"
   },
+  "keywords": [
+    "playground-plugin"
+  ],
   "dependencies": {
     "goober": "^1.7.1",
     "react": "^16.13.0",
