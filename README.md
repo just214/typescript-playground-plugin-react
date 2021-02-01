@@ -72,7 +72,7 @@ This will start a development server in watch mode, serve the `dist` directory a
 
 #### Step 4. Configure and use your plugin
 
-Visit [https://www.typescriptlang.org/v2/en/play](https://www.typescriptlang.org/v2/en/play).
+Visit [https://www.typescriptlang.org/play](https://www.typescriptlang.org/play).
 
 Select the **Options** tab and tick the box for **Connect to localhost:5000/index.js**.
 
