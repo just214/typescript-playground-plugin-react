@@ -8,10 +8,10 @@ const exec = require("child_process").exec;
 const getChromeTabs = require("get-chrome-tabs");
 const chalk = require("chalk");
 
-const PLAYGROUND_URL = "https://www.typescriptlang.org/v2/en/play";
+const PLAYGROUND_URL = "https://www.typescriptlang.org/play";
 
 function openPlayground() {
-  exec(`open-cli ${PLAYGROUND_URL} -- 'google chrome'`, function(err) {
+  exec(`open-cli ${PLAYGROUND_URL} -- chrome`, function (err) {
     if (err) {
       console.log(
         chalk.red("Error opening the TypeScript Playground. Please try again.")
@@ -28,14 +28,14 @@ function openPlayground() {
 let tabList = [];
 
 getChromeTabs()
-  .then(tabs => {
+  .then((tabs) => {
     tabList = tabs;
   })
-  .catch(err => {
+  .catch((err) => {
     return err;
   })
   .finally(() => {
-    const isPlaygroundOpen = tabList.find(tab =>
+    const isPlaygroundOpen = tabList.find((tab) =>
       tab.url.includes(PLAYGROUND_URL)
     );
     if (!isPlaygroundOpen) {
